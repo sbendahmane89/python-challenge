@@ -1,5 +1,3 @@
-# -*- coding: UTF-8 -*-
-"""PyPoll Homework Starter File."""
 
 # Import necessary modules
 import csv
@@ -27,9 +25,11 @@ with open(file_to_load) as election_data:
 
     # Loop through each row of the dataset and process it
     for row in reader:
+        # add on to the total votes
+        total_votes += 1   # same as total_Votes = total_Votes + 1
 
         # Print a loading indicator (for large datasets)
-        print(". ", end="")
+        #print(". ", end="")
 
         # Increment the total vote count for each row
 
@@ -44,7 +44,7 @@ with open(file_to_load) as election_data:
 
 
 # Open a text file to save the output
-with open(file_to_output, "w") as txt_file:
+#with open(file_to_output, "w") as txt_file:
 
     # Print the total vote count (to terminal)
 
@@ -66,5 +66,12 @@ with open(file_to_output, "w") as txt_file:
 
     # Generate and print the winning candidate summary
 
-
+# Generate the output summary
+    output = (
+    f"\nElection Results\n"
+    f"-------------------------\n"
+    f"Total Votes: {total_votes: }"
+ )  
+ # displays the output to the console     
+    print(output) 
     # Save the winning candidate summary to the text file
