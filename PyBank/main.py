@@ -1,4 +1,3 @@
-
 # Import necessary modules
 import csv
 import os
@@ -14,11 +13,9 @@ total_net = 0           # initialize the net total of "Profit/Losses" over the e
 monthly_changes = []    # initialize the list of net months changes
 months = []             # initialize the list of months  
 
-
-
-# read the csv file
+# Read the csv file
 with open(file_to_load) as financial_data:
-# create a csv reader object
+# Create a csv reader object
     reader = csv.reader(financial_data)
 
     # Skip the header row
@@ -43,41 +40,38 @@ with open(file_to_load) as financial_data:
 
         # Track the net change
         total_net += int(row[1])
-        # calculate the net change 
+        # Calculate the net change 
         netChange = int(row[1])-previousNet
-        # add on the list of monthly changes
+        # Add on the list of monthly changes
         monthly_changes.append(netChange)
         
-        # add the first month that a change occurred
+        # Add the first month that a change occurred
             # month is in index 0
         months.append(row[0]) 
         
-        # update the previous net 
+        # Update the previous net 
         previousNet = int(row[1])
-
-
-
-
+        
 # Calculate the average net change across the month
 averageChangePerMonth = sum(monthly_changes) / len(monthly_changes)  
 
 greatestIncrease = [months[0], monthly_changes[0]]  # holds the month and the value of the greatest increase
 greatestDecrease = [months[0], monthly_changes[0]] # holds the month and the value of the greatest decrease
 
-#use loop to calculate the index of the greatest and least monthly changes 
+# Use loop to calculate the index of the greatest and least monthly changes 
 for m in range(len(monthly_changes)):
      # Calculate the greatest increase in profits (month and amount)
     if (monthly_changes[m]> greatestIncrease[1]):
         #if the value is greater than the greatest increase, that value becomes the new greatesr increase
         greatestIncrease[1] = monthly_changes[m]
-        #update the month 
+        # Update the month 
         greatestIncrease[0]= months[m]
         
      # Calculate the greatest decrease in losses (month and amount)
     if (monthly_changes[m] < greatestDecrease[1]):
-        #if the value is less than the greatest decrease, that value becomes the new greatesr decrease
+        # if the value is less than the greatest decrease, that value becomes the new greatesr decrease
         greatestDecrease[1] = monthly_changes[m]
-        #update the month 
+        # Update the month 
         greatestDecrease[0]= months[m]
 
 # Generate the output summary

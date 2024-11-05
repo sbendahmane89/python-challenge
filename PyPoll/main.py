@@ -1,5 +1,4 @@
-
-# Import necessary modules
+# Import necessary modules (csv and os modules)
 import csv
 import os
 
@@ -11,10 +10,12 @@ file_to_output = os.path.join("analysis", "election_analysis.txt")  # Output fil
 total_votes = 0  # Track the total number of votes cast
 
 # Define lists and dictionaries to track candidate names and vote counts
-
+condidateVotes = {}
+condidates = [] # list that holds condidates names in the election data
 
 # Winning Candidate and Winning Count Tracker
-
+winningCount = 0 # variable that holds the winning count
+winningCondidate = "" # variable that holds the winning condidate
 
 # Open the CSV file and process it
 with open(file_to_load) as election_data:
@@ -25,53 +26,63 @@ with open(file_to_load) as election_data:
 
     # Loop through each row of the dataset and process it
     for row in reader:
-        # add on to the total votes
-        total_votes += 1   # same as total_Votes = total_Votes + 1
-
-        # Print a loading indicator (for large datasets)
-        #print(". ", end="")
-
+        
         # Increment the total vote count for each row
-
-
-        # Get the candidate's name from the row
-
-
-        # If the candidate is not already in the candidate list, add them
-
-
-        # Add a vote to the candidate's count
-
-
-# Open a text file to save the output
-#with open(file_to_output, "w") as txt_file:
-
-    # Print the total vote count (to terminal)
-
-
-    # Write the total vote count to the text file
-
-
+        total_votes += 1   # same as total_Votes = total_Votes + 1
+        
+        # Check to see if the condidate is in the list of condidates 
+        if row[2] not in condidates:
+            # If the candidate is not already in the candidate list, add them
+            condidates.append(row[2])
+            # Add the value to the dictionary
+            # Start the count at 1 for the votes
+            condidateVotes[row[2]] =1
+        else:
+            # The condidate is in the list of condidates
+            # Add a vote to the candidate's count
+            condidateVotes[row[2]] += 1
+     
+    vote_Output = ""
+            
     # Loop through the candidates to determine vote percentages and identify the winner
-
-
+    for condidate in condidateVotes:
+        
         # Get the vote count and calculate the percentage
-
-
-        # Update the winning candidate if this one has more votes
-
-
+        votes = condidateVotes.get(condidate)
+        vote_Percentage =  (float(votes) / float(total_votes)) * 100
+        
         # Print and save each candidate's vote count and percentage
+        vote_Output += f"{condidate}: {vote_Percentage:.3f}% ({votes}) \n"
 
-
-    # Generate and print the winning candidate summary
-
-# Generate the output summary
-    output = (
+        # Compare the votes to the winning count 
+        if votes > winningCount:
+            
+           # Update the winning candidate to the winning count
+            winningCount = votes
+            
+           # Update the winning candidate 
+            winningCondidate = condidate
+            
+           # Generate and print the winning candidate summary  
+            winingCondidateOutput = f"Winner: {winningCondidate}\n-------------------------"
+            
+# create an output varible to hold the output
+output = (
     f"\nElection Results\n"
     f"-------------------------\n"
-    f"Total Votes: {total_votes: }"
+    f"Total Votes: {total_votes: } \n"
+    f"-------------------------\n"
+    f"{vote_Output}"
+    f"-------------------------\n"
+    f"{winingCondidateOutput}"
  )  
- # displays the output to the console     
-    print(output) 
-    # Save the winning candidate summary to the text file
+
+ # Displays the output to the console     
+print(output)
+
+# Open a text file to save the output
+with open(file_to_output, "w") as txt_file:
+    
+    # Write the output to the text file
+    txt_file.write(output)
+    
